@@ -20,6 +20,9 @@ clean-all: ## Clean all unused docker containers
 	echo "Deleting *ALL* Docker containers!"
 	docker container stop $(docker container ls --all --quiet) && docker system prune --all --force --volumes
 
+run: ##       Run the main.py file
+	docker run $(CONTAINER_TAG) python3 src/main.py
+
 shell: ##     Launch the container shell for dev
 	echo
 	echo "Opening shell in $(CONTAINER_TAG)"
