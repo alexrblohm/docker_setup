@@ -1,4 +1,4 @@
-.PHONY : build clean-u clean-all
+.PHONY : build clean-u clean-all run shell jup stop
 
 CONTAINER_TAG=example_name
 
@@ -10,12 +10,12 @@ build: ##     Build the Docker Container
 	echo "Build the Docker Container and tag it: $(CONTAINER_TAG)"
 	docker build --tag $(CONTAINER_TAG) .
 
-clean-u: ##   Clean all unused docker containers
+clean-u: ##   Clean unused docker containers
 	echo
 	echo "Deleting all unused Docker containers."
 	docker system prune --all --force --volumes
 
-clean-all: ## Clean all unused docker containers
+clean-all: ## Clean *all* docker containers
 	echo
 	echo "Deleting *ALL* Docker containers!"
 	docker container stop $(docker container ls --all --quiet) && docker system prune --all --force --volumes
@@ -23,11 +23,11 @@ clean-all: ## Clean all unused docker containers
 run: ##       Run the main.py file
 	docker run $(CONTAINER_TAG) python3 src/main.py
 
-shell: ##     Launch the container shell for dev
+shell: ##     Launch the container shell (for dev)
 	echo
 	echo "Opening shell in $(CONTAINER_TAG)"
 	echo "To leave the shell run: 'exit'"
-	docker run --interactive --tty -v "$(pwd)":/container_root\
+	docker run --interactive --tty --volume "$(pwd)":/container_root\
     $(CONTAINER_TAG) /bin/sh
 
 jup: ##       Launch Jupyter Notebooks
